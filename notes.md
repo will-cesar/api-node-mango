@@ -1,6 +1,7 @@
 ## Comandos iniciais do projeto
 
-- npm init - comando para iniciar o projeto e criar o package.json
+- npm init 
+    - comando para iniciar o projeto e criar o package.json
 
 - npm i standard -D 
     - standardJS - biblioteca para padronização de código parecida com o ESLint
@@ -24,3 +25,10 @@
     - nesse projeto foi adicionado o script 'pre-commit": "lint-staged'
         - nesse caso, antes de qualquer commit é acionado o script do "lint-staged"
         - o lint-staged vai verificar todos os arquivos js dentro da staged area e rodar o script do standardJs
+
+- npm i jest -D
+    - biblioteca responsável pelos testes
+- jest --init
+    - configuração inicial do jest no projeto, criando automaticamente o arquivo "jest.config.js"
+    - para executar essa configuração é necessário ter o jest instalado de forma global
+    - npm install -g jest
