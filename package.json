@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/will-cesar/api-node-mango/issues"
   },
-  "homepage": "https://github.com/will-cesar/api-node-mango#readme"
+  "homepage": "https://github.com/will-cesar/api-node-mango#readme",
+  "devDependencies": {
+    "standard": "^16.0.3"
+  }
 }
