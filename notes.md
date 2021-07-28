@@ -17,6 +17,8 @@
         - esse script significa que toda vez que ter um arquivo .js na staged area, esse arquivo será formatado conforme as regras do standardJs
         - o "--fix" tenta corrigir todos os problemas encontrado dentro do arquivo, modificando o arquivo
         - o comando "git add" adiciona novamente o arquivo na staged area antes de realizar o commit
+    - é possível extrair as configurações do package.json para um arquivo na raiz do projeto
+    - nesse caso foi criado o arquivo .lintstagedrc.json e colocada as configurações dentro dele
 
 - npm install husky --save-dev
     - biblioteca que permite utilizar hooks
@@ -25,6 +27,8 @@
     - nesse projeto foi adicionado o script 'pre-commit": "lint-staged'
         - nesse caso, antes de qualquer commit é acionado o script do "lint-staged"
         - o lint-staged vai verificar todos os arquivos js dentro da staged area e rodar o script do standardJs
+    - é possível extrair as configurações do package.json para um arquivo na raiz do projeto
+    - nesse caso foi criado o arquivo .huskyrc.json e colocada as configurações dentro dele
 
 - npm i jest -D
     - biblioteca responsável pelos testes
