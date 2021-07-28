@@ -6,3 +6,21 @@
     - standardJS - biblioteca para padronização de código parecida com o ESLint
     - usa como padrão de código o JavaScript standard
     - o standard não é necessário criar uma configuração por arquivo igual o ESLint
+
+- npm i lint-staged -D
+    - biblioteca que permite que sejam rodados scripts dentro da "staged area"
+    - ou seja, é possível fazer uma validação nos arquivos que irão entrar no próximo commit
+    - "staged area" é o local onde ficam os arquivos que vão entrar no próximo commit
+    - dentro do package.json é possível criar as configurações desses scripts
+    - nesse projeto foi adicionado o script '*.js": ["standard --fix"]'
+        - esse script significa que toda vez que ter um arquivo .js na staged area, esse arquivo será formatado conforme as regras do standardJs
+        - o "--fix" tenta corrigir todos os problemas encontrado dentro do arquivo, modificando o arquivo
+        - o comando "git add" adiciona novamente o arquivo na staged area antes de realizar o commit
+
+- npm install husky --save-dev
+    - biblioteca que permite utilizar hooks
+    - é possível rodar scripts com esses hooks antes de algum evento, por exemplo um commit
+    - essa configuração é feita dentro do package.json 
+    - nesse projeto foi adicionado o script 'pre-commit": "lint-staged'
+        - nesse caso, antes de qualquer commit é acionado o script do "lint-staged"
+        - o lint-staged vai verificar todos os arquivos js dentro da staged area e rodar o script do standardJs
