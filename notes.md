@@ -40,5 +40,9 @@
 ## Testes
 - como boa prática, se inicia primeiro criando o arquivo de teste
 - dentro dele, criar o primeiro teste, para assim logo em seguida criar os métodos e etc
-- "sut" - como boa prática, é nomeado o objeto que está sendo testado como sut
+- "sut" 
+    - como boa prática, é nomeado o objeto que está sendo testado como sut
     - significa "system under test"
+- "--watchAll" 
+    - flag colocada dentro do script de teste para rodar o teste sempre, sem precisar ficar reiniciando ele
+    - toda vez que salvar, o teste será executado novamente
