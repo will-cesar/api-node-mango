@@ -36,3 +36,9 @@
     - configuração inicial do jest no projeto, criando automaticamente o arquivo "jest.config.js"
     - para executar essa configuração é necessário ter o jest instalado de forma global
     - npm install -g jest
+
+## Testes
+- como boa prática, se inicia primeiro criando o arquivo de teste
+- dentro dele, criar o primeiro teste, para assim logo em seguida criar os métodos e etc
+- "sut" - como boa prática, é nomeado o objeto que está sendo testado como sut
+    - significa "system under test"
