@@ -48,3 +48,7 @@
     - toda vez que salvar, o teste será executado novamente
 - "spy"
     - é uma classe de teste que fica capturando valores e fazendo comparações
+
+## Observações
+- Status code: 401 = usado quando o sistema não identifica quem é o usuário
+               403 = usado quando o sistema sabe quem é o usuário, mas ele não tem permissão para executar tal ação que foi solicitada
