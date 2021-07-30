@@ -46,3 +46,5 @@
 - "--watchAll" 
     - flag colocada dentro do script de teste para rodar o teste sempre, sem precisar ficar reiniciando ele
     - toda vez que salvar, o teste será executado novamente
+- "spy"
+    - é uma classe de teste que fica capturando valores e fazendo comparações
