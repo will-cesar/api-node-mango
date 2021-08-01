@@ -19,6 +19,7 @@
     - é possível extrair as configurações do package.json para um arquivo na raiz do projeto
     - nesse caso foi criado o arquivo .lintstagedrc.json e colocada as configurações dentro dele
     - foi criado também um script "pre-commit": "lint-staged --allow-empty" dentro do package.json para rodar o lint-staged
+        - --allow-empty - permite commits vazios, quando não há alteração do arquivo pelo lint
 
 - npm install husky --save-dev
     - biblioteca que permite utilizar hooks
@@ -41,11 +42,30 @@
 - "sut" 
     - como boa prática, é nomeado o objeto que está sendo testado como sut
     - significa "system under test"
-- "--watchAll" 
-    - flag colocada dentro do script de teste para rodar o teste sempre, sem precisar ficar reiniciando ele
-    - toda vez que salvar, o teste será executado novamente
 - "spy"
     - é uma classe de teste que fica capturando valores e fazendo comparações
+    - por boa prática, é interessante colocar no final do nome da classe o "Spy" para itendificar que é uma classe spy
+- flags - algumas flags adicionadas dentro do script de teste
+    - "--watchAll":
+        - Roda o teste sempre, sem precisar ficar reiniciando ele
+        - toda vez que salvar qualquer arquivo do projeto, o teste será executado novamente
+    - "--watch"
+        - Roda os testes apenas nos arquivos que estão na staged area
+        - serão executados somente os arquivos de testes modificados
+    - "--passWithNoTests" 
+        - Permite commits sem alterações nos arquivos de testes
+    - "--findRelatedTests"
+        - Roda somente os arquivos de testes modificados
+        - ou seja, não rodara todos os testes da aplicação, somente os testes modificados 
+    - "--silent"
+        - exibe no relatório de testes somente os testes que apresentam erro
+    - "--colors"
+        - exibe o relatório colorido quando é utilizado o terminal externo do VsCode
+    - "--noStackTrace"
+        - não retorna o log completo do erro do teste
+        - quando acontece um erro, ele retorna  de forma resumida qual teste está errado e qual
+        o erro em específico
+
 
 ## Observações
 - Status code: 401 = usado quando o sistema não identifica quem é o usuário

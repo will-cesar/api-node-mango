@@ -6,13 +6,11 @@
   "scripts": {
     "pre-commit": "lint-staged --allow-empty",
     "prepare": "husky install",
-    "test": "jest --watchAll",
-    "test:staged": "jest --passWithNoTests"
+    "test": "jest --watch --silent --colors --noStackTrace",
+    "test:staged": "jest --passWithNoTests --findRelatedTests ./src --silent --noStackTrace"
   },
   "standard": {
-    "env": [
-      "jest"
-    ]
+    "env": ["jest"]
   },
   "repository": {
     "type": "git",
