@@ -1,6 +1,5 @@
 {
   "*.js": [
-    "npx standard --fix",
-    "npm run test:staged"
+    "npx standard --fix"
   ]
 }

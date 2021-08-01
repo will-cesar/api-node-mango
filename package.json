@@ -4,10 +4,10 @@
   "description": "> API NodeJS with Clean Architecture and TDD</br> > Link playlist tutorial: https://youtube.com/playlist?list=PL9aKtVrF05DyEwK5kdvzrYXFdpZfj1dsG",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll",
-    "test:staged": "jest",
+    "pre-commit": "lint-staged",
     "prepare": "husky install",
-    "pre-commit": "lint-staged"
+    "test": "jest --watchAll",
+    "test:staged": "jest"
   },
   "standard": {
     "env": [
