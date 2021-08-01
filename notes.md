@@ -16,9 +16,9 @@
     - nesse projeto foi adicionado o script '*.js": ["standard --fix"]'
         - esse script significa que toda vez que ter um arquivo .js na staged area, esse arquivo será formatado conforme as regras do standardJs
         - o "--fix" tenta corrigir todos os problemas encontrado dentro do arquivo, modificando o arquivo
-        - o comando "git add" adiciona novamente o arquivo na staged area antes de realizar o commit
     - é possível extrair as configurações do package.json para um arquivo na raiz do projeto
     - nesse caso foi criado o arquivo .lintstagedrc.json e colocada as configurações dentro dele
+    - foi criado também um script "pre-commit": "lint-staged --allow-empty" dentro do package.json para rodar o lint-staged
 
 - npm install husky --save-dev
     - biblioteca que permite utilizar hooks
@@ -26,7 +26,7 @@
     - para iniciar a configuração dele, é preciso rodar o comando "npx husky-init"
     - é criado automáticamente uma pasta .husky onde é possível adicionar as configurações de cada evento
     - nesse projeto foi criado uma configuração pré-commit para rodar os testes e o lint
-        - com essa configuração só é possível a execução do commit caso os dois comandos retornem sucesso
+        - com essa configuração só é possível a execução do commit caso os dois comandos retornem sucesso    
 
 - npm i jest -D
     - biblioteca responsável pelos testes
