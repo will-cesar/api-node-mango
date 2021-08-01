@@ -89,6 +89,25 @@ describe('Login Router', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
 
+  // test('Should return 400 if an invalid email is provided', async () => {
+  //   /*
+  //     Nesse teste se espera o retorno "400" da requisição caso
+  //     a propriedade email seja inválida
+  //   */
+
+  //   const { sut } = makeSut()
+  //   const httpRequest = {
+  //     body: {
+  //       email: 'any_email@email.com',
+  //       password: 'any_password'
+  //     }
+  //   }
+
+  //   const httpResponse = await sut.route(httpRequest)
+  //   expect(httpResponse.statusCode).toBe(400)
+  //   expect(httpResponse.body).toEqual(new InvalidParamError('email'))
+  // })
+
   test('Should return 500 if no httpRequest is provided', async () => {
     /*
       Nesse teste se espera o retorno "500" e o body sendo ServerError()
