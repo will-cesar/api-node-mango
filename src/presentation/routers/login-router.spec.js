@@ -1,5 +1,6 @@
 const LoginRouter = require('./login-router')
 const MissingParamError = require('../helpers/missing-param-error')
+const InvalidParamError = require('../helpers/invalid-param-error')
 const UnauthorizedError = require('../helpers/unauthorized-error')
 const ServerError = require('../helpers/server-error')
 
@@ -14,10 +15,33 @@ const makeSut = () => {
   */
 
   const authUseCaseSpy = makeAuthUseCase()
+  const emailValidatorSpy = makeEmailValidator()
   authUseCaseSpy.accessToken = 'valid_token'
-  const sut = new LoginRouter(authUseCaseSpy)
+  const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy)
 
-  return { sut, authUseCaseSpy }
+  return { sut, authUseCaseSpy, emailValidatorSpy }
+}
+
+const makeEmailValidator = () => {
+  /*
+    Factory para gerar uma instância da classe EmailValidatorSpy.
+    Essa classe tem um método de validação de email.
+    Por padrão é passado a propriedade "isEmailValid" como true, para
+    não precisar modificar todos os testes, assim para testar algum
+    caso de uso diferente, é necessário modificar a propriedade
+    apenas para aquele caso em específico.
+    Retorna uma instância do emailValidatorSpy modificada
+  */
+
+  class EmailValidatorSpy {
+    isValid (email) {
+      return this.isEmailValid
+    }
+  }
+
+  const emailValidatorSpy = new EmailValidatorSpy()
+  emailValidatorSpy.isEmailValid = true
+  return emailValidatorSpy
 }
 
 const makeAuthUseCase = () => {
@@ -89,24 +113,28 @@ describe('Login Router', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
 
-  // test('Should return 400 if an invalid email is provided', async () => {
-  //   /*
-  //     Nesse teste se espera o retorno "400" da requisição caso
-  //     a propriedade email seja inválida
-  //   */
+  test('Should return 400 if an invalid email is provided', async () => {
+    /*
+      Nesse teste se espera o retorno "400" da requisição caso
+      a propriedade email seja inválida.
+      É capturada o emailValidatorSpy do "makeSut()" e modificada
+      a propriedade "isEmailValid" para false de propósito, para
+      ocorrer o erro de e-mail inválido
+    */
 
-  //   const { sut } = makeSut()
-  //   const httpRequest = {
-  //     body: {
-  //       email: 'any_email@email.com',
-  //       password: 'any_password'
-  //     }
-  //   }
+    const { sut, emailValidatorSpy } = makeSut()
+    emailValidatorSpy.isEmailValid = false
+    const httpRequest = {
+      body: {
+        email: 'any_email@email.com',
+        password: 'any_password'
+      }
+    }
 
-  //   const httpResponse = await sut.route(httpRequest)
-  //   expect(httpResponse.statusCode).toBe(400)
-  //   expect(httpResponse.body).toEqual(new InvalidParamError('email'))
-  // })
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new InvalidParamError('email'))
+  })
 
   test('Should return 500 if no httpRequest is provided', async () => {
     /*
