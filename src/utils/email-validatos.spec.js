@@ -6,6 +6,13 @@ class EmailValidator {
   }
 }
 
+const makeSut = () => {
+  /*
+    Factory para criar a instância do EmailValidator()
+  */
+  return new EmailValidator()
+}
+
 describe('Email Validator', () => {
   /*
     - Teste responsável por validar se o retorno da biblioteca validator é true
@@ -16,7 +23,7 @@ describe('Email Validator', () => {
     - Isso serve para o teste em seguida, que é caso retorne false
   */
   test('Should return true if validator returns true', () => {
-    const sut = new EmailValidator()
+    const sut = makeSut()
     const isEmailValid = sut.isValid('valid_email@email.com')
     expect(isEmailValid).toBe(true)
   })
@@ -29,7 +36,7 @@ describe('Email Validator', () => {
     - Para o teste ser bem sucedido é necessário passar o valor false dentro do teste
   */
     validator.isEmailValid = false
-    const sut = new EmailValidator()
+    const sut = makeSut()
     const isEmailValid = sut.isValid('invalid_email@email.com')
     expect(isEmailValid).toBe(false)
   })
