@@ -14,3 +14,22 @@
 - [**Lint-staged**](https://github.com/okonet/lint-staged)
 - [**Node.js**](https://nodejs.org/en/)
 - [**StandardJS**](https://standardjs.com)
+
+## Comands (scripts)
+
+- npm run pre-commit
+  - Run the lint-staged. 
+  - This script are created to husky run this before make a commit.
+  - Lint-staged ensure the code is on pattern of StandardJS.
+
+- npm test: 
+  - Execute tests in application.
+
+- npm run test:staged 
+  - Execute tests with different rules in relation to "npm test".
+  - This script are created to husky run this before make a commit.
+
+- npm run test:ci
+  - Execute tests with report.
+  - This report show to us if the test coverage all files in the application or not.
+  - This script are used in CI (Continuous Integration)

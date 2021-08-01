@@ -26,8 +26,9 @@
     - é possível rodar scripts com esses hooks antes de algum evento, por exemplo um pré-commit
     - para iniciar a configuração dele, é preciso rodar o comando "npx husky-init"
     - é criado automáticamente uma pasta .husky onde é possível adicionar as configurações de cada evento
-    - nesse projeto foi criado uma configuração pré-commit para rodar os testes e o lint
-        - com essa configuração só é possível a execução do commit caso os dois comandos retornem sucesso    
+    - para criar novos eventos é necessário rodar o comando 'npx husky add .husky/evento (pre-commit, pre-push) "script_de_execução"'
+    - nesse projeto foi criado uma configuração pré-commit para rodar os testes e o lint, e um pre-push para rodar o script "test:ci"
+        - com essa configuração só é possível a criação do commit caso os comandos retornem sucesso   
 
 - npm i jest -D
     - biblioteca responsável pelos testes
@@ -57,6 +58,7 @@
     - "--findRelatedTests"
         - Roda somente os arquivos de testes modificados
         - ou seja, não rodara todos os testes da aplicação, somente os testes modificados 
+        - é necessário especificar qual o local dos arquivos que serão afetados pela flag
     - "--silent"
         - exibe no relatório de testes somente os testes que apresentam erro
     - "--colors"

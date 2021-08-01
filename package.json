@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "pre-commit": "lint-staged --allow-empty",
-    "prepare": "husky install",
     "test": "jest --watch --silent --colors --noStackTrace",
-    "test:staged": "jest --passWithNoTests --findRelatedTests ./src --silent --noStackTrace"
+    "test:staged": "jest --passWithNoTests --findRelatedTests ./src --silent --noStackTrace",
+    "test:ci": "jest --coverage"
   },
   "standard": {
     "env": ["jest"]
