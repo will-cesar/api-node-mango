@@ -40,4 +40,14 @@ describe('Email Validator', () => {
     const isEmailValid = sut.isValid('invalid_email@email.com')
     expect(isEmailValid).toBe(false)
   })
+
+  test('Should call validator with correct email', () => {
+    /*
+    - Teste para validar se o email que foi passado para o validator é o mesmo que esta
+    sendo enviado para ele
+  */
+    const sut = makeSut()
+    sut.isValid('any_email@email.com')
+    expect(validator.email).toBe('any_email@email.com')
+  })
 })
