@@ -27,7 +27,7 @@ const makeAuthUseCase = () => {
   */
 
   class AuthUseCaseSpy {
-    auth (email, password) {
+    async auth (email, password) {
       this.email = email
       this.password = password
       return this.accessToken
@@ -44,7 +44,7 @@ const makeAuthUseCaseWithError = () => {
   */
 
   class AuthUseCaseSpy {
-    auth () {
+    async auth () {
       throw new Error()
     }
   }
@@ -53,7 +53,7 @@ const makeAuthUseCaseWithError = () => {
 }
 
 describe('Login Router', () => {
-  test('Should return 400 if no email is provided', () => {
+  test('Should return 400 if no email is provided', async () => {
     /*
       Nesse teste se espera o retorno "400" da requisição caso
       a propriedade email não seja passada dentro do body
@@ -66,12 +66,12 @@ describe('Login Router', () => {
       }
     }
 
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParamError('email'))
   })
 
-  test('Should return 400 if no password is provided', () => {
+  test('Should return 400 if no password is provided', async () => {
     /*
       Nesse teste se espera o retorno "400" da requisição caso
       a propriedade password não seja passada dentro do body
@@ -84,12 +84,12 @@ describe('Login Router', () => {
       }
     }
 
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
 
-  test('Should return 500 if no httpRequest is provided', () => {
+  test('Should return 500 if no httpRequest is provided', async () => {
     /*
       Nesse teste se espera o retorno "500" e o body sendo ServerError()
       da requisição, caso seja chamada a requisição, mas não passe nenhum
@@ -99,12 +99,12 @@ describe('Login Router', () => {
 
     const { sut } = makeSut()
 
-    const httpResponse = sut.route()
+    const httpResponse = await sut.route()
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
   })
 
-  test('Should return 500 if httpRequest has no body', () => {
+  test('Should return 500 if httpRequest has no body', async () => {
     /*
       Nesse teste se espera o retorno "500" e o body sendo ServerError()
       da requisição, caso o request não tenha body.
@@ -113,7 +113,7 @@ describe('Login Router', () => {
 
     const { sut } = makeSut()
 
-    const httpResponse = sut.route({})
+    const httpResponse = await sut.route({})
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
   })
@@ -137,7 +137,7 @@ describe('Login Router', () => {
     expect(authUseCaseSpy.password).toBe(httpRequest.body.password)
   })
 
-  test('Should return 401 when invalid credentials are provided', () => {
+  test('Should return 401 when invalid credentials are provided', async () => {
     /*
       Nesse teste se espera o retorno 401 quando é passado
       pela requisição um token inválido. Como por padrão o
@@ -155,12 +155,12 @@ describe('Login Router', () => {
       }
     }
 
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(401)
     expect(httpResponse.body).toEqual(new UnauthorizedError())
   })
 
-  test('Should return 200 when valid credentials are provided', () => {
+  test('Should return 200 when valid credentials are provided', async () => {
     /*
       Nesse teste se espera o retorno 200 quando é passado
       pela requisição um token válido. Como por padrão o método
@@ -177,12 +177,12 @@ describe('Login Router', () => {
       }
     }
 
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(200)
     expect(httpResponse.body.accessToken).toEqual(authUseCaseSpy.accessToken)
   })
 
-  test('Should return 500 if no AuthUseCase is provided', () => {
+  test('Should return 500 if no AuthUseCase is provided', async () => {
     /*
       Nesse teste se espera o retorno "500" e o body sendo ServerError()
       da requisição, quando o authUseCase não é passado na requisição.
@@ -200,12 +200,12 @@ describe('Login Router', () => {
       }
     }
 
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
   })
 
-  test('Should return 500 if AuthUseCase has no auth method', () => {
+  test('Should return 500 if AuthUseCase has no auth method', async () => {
     /*
       Nesse teste se espera o retorno "500" e o body sendo ServerError()
       da requisição, quando não é passado o método
@@ -225,12 +225,12 @@ describe('Login Router', () => {
       }
     }
 
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
   })
 
-  test('Should return 500 if AuthUseCase throws', () => {
+  test('Should return 500 if AuthUseCase throws', async () => {
     /*
       Nesse teste se espera o retorno "500" e o body sendo ServerError()
       da requisição, quando o AuthUseCase retorna algum erro interno.
@@ -248,7 +248,7 @@ describe('Login Router', () => {
       }
     }
 
-    const httpResponse = sut.route(httpRequest)
+    const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
   })
 })

@@ -5,7 +5,7 @@ module.exports = class LoginRouter {
     this.authUseCase = authUseCase
   }
 
-  route (httpRequest) {
+  async route (httpRequest) {
     /*
       O try catch foi utilizado nesse caso pois, cada erro
       que pode ocorrer vai quebrar algum método de alguma forma,
@@ -27,7 +27,7 @@ module.exports = class LoginRouter {
         return HttpResponse.badRequest('password')
       }
 
-      const accessToken = this.authUseCase.auth(email, password)
+      const accessToken = await this.authUseCase.auth(email, password)
       if (!accessToken) {
         return HttpResponse.unauthorizedError()
       }
