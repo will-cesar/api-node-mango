@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watchAll",
     "test:staged": "jest",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "standard": {
     "env": [

@@ -22,13 +22,11 @@
 
 - npm install husky --save-dev
     - biblioteca que permite utilizar hooks
-    - é possível rodar scripts com esses hooks antes de algum evento, por exemplo um commit
-    - essa configuração é feita dentro do package.json 
-    - nesse projeto foi adicionado o script 'pre-commit": "lint-staged'
-        - nesse caso, antes de qualquer commit é acionado o script do "lint-staged"
-        - o lint-staged vai verificar todos os arquivos js dentro da staged area e rodar o script do standardJs
-    - é possível extrair as configurações do package.json para um arquivo na raiz do projeto
-    - nesse caso foi criado o arquivo .huskyrc.json e colocada as configurações dentro dele
+    - é possível rodar scripts com esses hooks antes de algum evento, por exemplo um pré-commit
+    - para iniciar a configuração dele, é preciso rodar o comando "npx husky-init"
+    - é criado automáticamente uma pasta .husky onde é possível adicionar as configurações de cada evento
+    - nesse projeto foi criado uma configuração pré-commit para rodar os testes e o lint
+        - com essa configuração só é possível a execução do commit caso os dois comandos retornem sucesso
 
 - npm i jest -D
     - biblioteca responsável pelos testes
