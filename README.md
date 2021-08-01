@@ -25,8 +25,13 @@
 - npm test
   - Execute tests in application with a few rules
 
+- npm run test:integration
+  - Run the script "npm test" with some additional rules
+  - Use with default the jest-integration-config, configurations to integration tests
+
 - npm run test:unit
   - Run the script "npm test" with some additional rules
+  - Use with default the jest-unit-config, configurations to units tests
 
 - npm run test:staged 
   - Execute tests with different rules in relation to "npm test".

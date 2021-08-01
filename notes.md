@@ -67,7 +67,16 @@
         - não retorna o log completo do erro do teste
         - quando acontece um erro, ele retorna  de forma resumida qual teste está errado e qual
         o erro em específico
-
+- .spec.js e .test.js
+    - nesse projeto foi diferenciado os arquivos de testes unitários e testes integrados pelas suas extensões de cada arquivo
+    - .spec.js - arquivos com testes unitários
+    - .test.js - arquivos com testes de integração
+- jest-unit-config.js
+    - arquivo criado para adicionar algumas regras quando for executado testes unitários
+    - nesse projeto, dentro desse arquivo foi adicionada a propriedade "testMatch", nela é possível configurar pela extensão do nome do arquivo, 
+    quais serão os arquivos de testes que serão executados
+- jest-integration-config.js
+    - mesma coisa que oa arquivo "jest-unit-config.js", mas adicionando regras para testes de integração
 
 ## Observações
 - Status code: 401 = usado quando o sistema não identifica quem é o usuário
