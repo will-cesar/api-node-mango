@@ -24,13 +24,13 @@ const makeSut = () => {
 
 const makeEmailValidator = () => {
   /*
-    Factory para gerar uma instância da classe EmailValidatorSpy.
+    - Factory para gerar uma instância da classe EmailValidatorSpy.
     Essa classe tem um método de validação de email.
-    Por padrão é passado a propriedade "isEmailValid" como true, para
+    - Por padrão é passado a propriedade "isEmailValid" como true, para
     não precisar modificar todos os testes, assim para testar algum
     caso de uso diferente, é necessário modificar a propriedade
     apenas para aquele caso em específico.
-    Retorna uma instância do emailValidatorSpy modificada
+    - Retorna uma instância do emailValidatorSpy modificada.
   */
 
   class EmailValidatorSpy {
@@ -44,10 +44,25 @@ const makeEmailValidator = () => {
   return emailValidatorSpy
 }
 
+const makeEmailValidatorWithError = () => {
+  /*
+    - Factory para gerar uma instância da classe EmailValidatorSpy com erro.
+    - Esse método cria a classe EmailValidatorSpy simulando um erro
+    e retorna a mesma.
+  */
+  class EmailValidatorSpy {
+    isValid () {
+      throw new Error()
+    }
+  }
+
+  return new EmailValidatorSpy()
+}
+
 const makeAuthUseCase = () => {
   /*
-    Factory para não repetição de código. Esse método cria a
-    classe AuthUseCaseSpy e retorna a mesma
+    - Factory para não repetição de código.
+    - Esse método cria a classe AuthUseCaseSpy e retorna a mesma.
   */
 
   class AuthUseCaseSpy {
@@ -63,8 +78,9 @@ const makeAuthUseCase = () => {
 
 const makeAuthUseCaseWithError = () => {
   /*
-    Factory para não repetição de código. Esse método cria a
-    classe AuthUseCaseSpy simulando um erro e retorna a mesma
+    - Factory para não repetição de código.
+    - Esse método cria a classe AuthUseCaseSpy simulando um erro
+    e retorna a mesma.
   */
 
   class AuthUseCaseSpy {
@@ -347,5 +363,27 @@ describe('Login Router', () => {
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
+  })
+
+  test('Should return 500 if EmailValidator throws', async () => {
+    /*
+      - Nesse teste se espera o retorno "500" e o body sendo ServerError()
+      da requisição, quando o EmailValidator retorna algum erro interno.
+      - Foi recriada a classe EmailValidator para retornar no método
+      auth() alguma exceção.
+    */
+
+    const authUseCaseSpy = makeAuthUseCase()
+    const emailValidatorSpy = makeEmailValidatorWithError()
+    const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy)
+    const httpRequest = {
+      body: {
+        email: 'any_email@email.com',
+        password: 'any_password'
+      }
+    }
+
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
   })
 })
