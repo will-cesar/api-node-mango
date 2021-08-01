@@ -14,6 +14,7 @@
 - [**Lint-staged**](https://github.com/okonet/lint-staged)
 - [**Node.js**](https://nodejs.org/en/)
 - [**StandardJS**](https://standardjs.com)
+- [**Validator**](https://www.npmjs.com/package/validator)
 
 ## Comands (scripts)
 
