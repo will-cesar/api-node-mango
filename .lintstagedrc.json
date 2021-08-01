@@ -1,5 +1,6 @@
 {
   "*.js": [
-    "npx standard --fix"
+    "npx standard --fix",
+    "git add"
   ]
 }

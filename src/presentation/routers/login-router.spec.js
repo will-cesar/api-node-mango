@@ -5,13 +5,13 @@ const ServerError = require('../helpers/server-error')
 
 const makeSut = () => {
   /*
-        método que cria uma classe mockada de autenticação (por isso
-        se utiliza do "Spy" no final do nome, para identificar que
-        essa classe é mockada) e faz uma instância das classes
-        AuthUseCaseSpy e LoginRouter, retornando as mesmas para
-        serem utilizadas. Por padrão está sendo definido um token
-        válido toda vez que é utilizado o método makeSut
-    */
+    método que cria uma classe mockada de autenticação (por isso
+    se utiliza do "Spy" no final do nome, para identificar que
+    essa classe é mockada) e faz uma instância das classes
+    AuthUseCaseSpy e LoginRouter, retornando as mesmas para
+    serem utilizadas. Por padrão está sendo definido um token
+    válido toda vez que é utilizado o método makeSut
+  */
 
   const authUseCaseSpy = makeAuthUseCase()
   authUseCaseSpy.accessToken = 'valid_token'
@@ -22,9 +22,10 @@ const makeSut = () => {
 
 const makeAuthUseCase = () => {
   /*
-        Factory para não repetição de código. Esse método cria a
-        classe AuthUseCaseSpy e retorna a mesma
-    */
+    Factory para não repetição de código. Esse método cria a
+    classe AuthUseCaseSpy e retorna a mesma
+  */
+
   class AuthUseCaseSpy {
     auth (email, password) {
       this.email = email
@@ -38,9 +39,10 @@ const makeAuthUseCase = () => {
 
 const makeAuthUseCaseWithError = () => {
   /*
-        Factory para não repetição de código. Esse método cria a
-        classe AuthUseCaseSpy simulando um erro e retorna a mesma
-    */
+    Factory para não repetição de código. Esse método cria a
+    classe AuthUseCaseSpy simulando um erro e retorna a mesma
+  */
+
   class AuthUseCaseSpy {
     auth () {
       throw new Error()
@@ -53,9 +55,10 @@ const makeAuthUseCaseWithError = () => {
 describe('Login Router', () => {
   test('Should return 400 if no email is provided', () => {
     /*
-            Nesse teste se espera o retorno "400" da requisição caso
-            a propriedade email não seja passada dentro do body
-        */
+      Nesse teste se espera o retorno "400" da requisição caso
+      a propriedade email não seja passada dentro do body
+    */
+
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -70,9 +73,10 @@ describe('Login Router', () => {
 
   test('Should return 400 if no password is provided', () => {
     /*
-            Nesse teste se espera o retorno "400" da requisição caso
-            a propriedade password não seja passada dentro do body
-        */
+      Nesse teste se espera o retorno "400" da requisição caso
+      a propriedade password não seja passada dentro do body
+    */
+
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -87,11 +91,12 @@ describe('Login Router', () => {
 
   test('Should return 500 if no httpRequest is provided', () => {
     /*
-            Nesse teste se espera o retorno "500" e o body sendo ServerError()
-            da requisição, caso seja chamada a requisição, mas não passe nenhum
-            parâmetro para a rota. No método route do "ligin-router.js" se espera
-            um parâmetro de "httpRequest"
-        */
+      Nesse teste se espera o retorno "500" e o body sendo ServerError()
+      da requisição, caso seja chamada a requisição, mas não passe nenhum
+      parâmetro para a rota. No método route do "ligin-router.js" se espera
+      um parâmetro de "httpRequest"
+    */
+
     const { sut } = makeSut()
 
     const httpResponse = sut.route()
@@ -101,10 +106,11 @@ describe('Login Router', () => {
 
   test('Should return 500 if httpRequest has no body', () => {
     /*
-            Nesse teste se espera o retorno "500" e o body sendo ServerError()
-            da requisição, caso o request não tenha body.
-            O objeto vazio representa o httpRequest sem o body
-        */
+      Nesse teste se espera o retorno "500" e o body sendo ServerError()
+      da requisição, caso o request não tenha body.
+      O objeto vazio representa o httpRequest sem o body
+    */
+
     const { sut } = makeSut()
 
     const httpResponse = sut.route({})
@@ -114,9 +120,9 @@ describe('Login Router', () => {
 
   test('Should call AuthUserCase with correct params', () => {
     /*
-            Nesse teste se espera que o email e a senha passados no
-            authUseCase são os mesmos que estão sendo passados no request
-        */
+      Nesse teste se espera que o email e a senha passados no
+      authUseCase são os mesmos que estão sendo passados no request
+    */
 
     const { sut, authUseCaseSpy } = makeSut()
     const httpRequest = {
@@ -133,11 +139,11 @@ describe('Login Router', () => {
 
   test('Should return 401 when invalid credentials are provided', () => {
     /*
-            Nesse teste se espera o retorno 401 quando é passado
-            pela requisição um token inválido. Como por padrão o
-            método "makeSut()" retorna um token válido, é necessário
-            readaptar o token colocando a váriavel como "null"
-        */
+      Nesse teste se espera o retorno 401 quando é passado
+      pela requisição um token inválido. Como por padrão o
+      método "makeSut()" retorna um token válido, é necessário
+      readaptar o token colocando a váriavel como "null"
+    */
 
     const { sut, authUseCaseSpy } = makeSut()
     authUseCaseSpy.accessToken = null
@@ -156,11 +162,12 @@ describe('Login Router', () => {
 
   test('Should return 200 when valid credentials are provided', () => {
     /*
-            Nesse teste se espera o retorno 200 quando é passado
-            pela requisição um token válido. Como por padrão o método
-            "makeSut()" retorna um token válido, não é preciso fazer
-            nenhuma adaptação
-        */
+      Nesse teste se espera o retorno 200 quando é passado
+      pela requisição um token válido. Como por padrão o método
+      "makeSut()" retorna um token válido, não é preciso fazer
+      nenhuma adaptação
+    */
+
     const { sut, authUseCaseSpy } = makeSut()
 
     const httpRequest = {
@@ -177,13 +184,14 @@ describe('Login Router', () => {
 
   test('Should return 500 if no AuthUseCase is provided', () => {
     /*
-            Nesse teste se espera o retorno "500" e o body sendo ServerError()
-            da requisição, quando o authUseCase não é passado na requisição.
-            Foi instanciado o LoginRouter() dentro do teste, pois quando utilizamos
-            o makeSut() é criada a instância do authUseCase automaticamente,
-            então dessa forma retornaria um resultado positivo,
-            mas não é isso que queremos nesse teste
-        */
+      Nesse teste se espera o retorno "500" e o body sendo ServerError()
+      da requisição, quando o authUseCase não é passado na requisição.
+      Foi instanciado o LoginRouter() dentro do teste, pois quando utilizamos
+      o makeSut() é criada a instância do authUseCase automaticamente,
+      então dessa forma retornaria um resultado positivo,
+      mas não é isso que queremos nesse teste
+    */
+
     const sut = new LoginRouter()
     const httpRequest = {
       body: {
@@ -199,15 +207,15 @@ describe('Login Router', () => {
 
   test('Should return 500 if AuthUseCase has no auth method', () => {
     /*
-            Nesse teste se espera o retorno "500" e o body sendo ServerError()
-            da requisição, quando não é passado o método
-            auth do authUseCase. Foi instanciado o LoginRouter()
-            dentro do teste, pois quando utilizamos o makeSut() é criada a
-            instância do authUseCase automaticamente, então dessa forma retornaria
-            um resultado positivo. O LoginRouter foi instanciado passando um objeto
-            vazio, assim forçando o authUseCase ser undefined, dessa forma
-            o retorno será como esperado, 500
-        */
+      Nesse teste se espera o retorno "500" e o body sendo ServerError()
+      da requisição, quando não é passado o método
+      auth do authUseCase. Foi instanciado o LoginRouter()
+      dentro do teste, pois quando utilizamos o makeSut() é criada a
+      instância do authUseCase automaticamente, então dessa forma retornaria
+      um resultado positivo. O LoginRouter foi instanciado passando um objeto
+      vazio, assim forçando o authUseCase ser undefined, dessa forma
+      o retorno será como esperado, 500
+    */
 
     const sut = new LoginRouter({})
     const httpRequest = {
@@ -224,10 +232,10 @@ describe('Login Router', () => {
 
   test('Should return 500 if AuthUseCase throws', () => {
     /*
-        Nesse teste se espera o retorno "500" e o body sendo ServerError()
-        da requisição, quando o AuthUseCase retorna algum erro interno.
-        Foi recriada a classe AuthUseCaseSpy para retornar no método
-        auth() alguma exceção
+      Nesse teste se espera o retorno "500" e o body sendo ServerError()
+      da requisição, quando o AuthUseCase retorna algum erro interno.
+      Foi recriada a classe AuthUseCaseSpy para retornar no método
+      auth() alguma exceção
     */
 
     const authUseCaseSpy = makeAuthUseCaseWithError()
