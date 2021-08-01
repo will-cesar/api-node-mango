@@ -22,8 +22,11 @@
   - This script are created to husky run this before make a commit.
   - Lint-staged ensure the code is on pattern of StandardJS.
 
-- npm test: 
-  - Execute tests in application.
+- npm test
+  - Execute tests in application with a few rules
+
+- npm run test:unit
+  - Run the script "npm test" with some additional rules
 
 - npm run test:staged 
   - Execute tests with different rules in relation to "npm test".
