@@ -22,7 +22,11 @@ class AuthUseCase {
       throw new InvalidParamError('loadUserByEmailRepository')
     }
 
-    await this.loadUserByEmailRepository.load(email)
+    const user = await this.loadUserByEmailRepository.load(email)
+
+    if (!user) {
+      return null
+    }
   }
 }
 
@@ -30,6 +34,7 @@ const makeSut = () => {
   /*
     - Método factory que cria uma classe mock de repositório
   */
+
   class LoadUserByEmailRepositorySpy {
     async load (email) {
       this.email = email
@@ -49,6 +54,7 @@ describe('Auth UseCase', () => {
       - const promise => está sendo retornada uma promise pois o método auth()
       é assíncrono, e a variável "promise" não está utilizando await para esperar o retorno
     */
+
     const { sut } = makeSut()
     const promise = sut.auth()
 
@@ -60,6 +66,7 @@ describe('Auth UseCase', () => {
       - Nesse teste é esperado o retorno de um erro do tipo MissingParamError
       quando não passar uma senha na chamada da classe AuthUseCase()
     */
+
     const { sut } = makeSut()
     const promise = sut.auth('any_email@email.com')
 
@@ -71,6 +78,7 @@ describe('Auth UseCase', () => {
       - Teste para certificar que o email recebido dentro da classe LoadUserByEmailRepository
       seja o mesmo que está sendo passado na classe AuthUseCase
     */
+
     const { sut, loadUserByEmailRepositorySpy } = makeSut()
     await sut.auth('any_email@email.com', 'any_password')
 
@@ -82,6 +90,7 @@ describe('Auth UseCase', () => {
       - Teste para gerar uma excessão caso o LoadUserByEmailRepository não seja
       passado na hora de criar a instância da classe
     */
+
     const sut = new AuthUseCase()
     const promise = sut.auth('any_email@email.com', 'any_password')
 
@@ -99,5 +108,15 @@ describe('Auth UseCase', () => {
     const promise = sut.auth('any_email@email.com', 'any_password')
 
     expect(promise).rejects.toThrow(new InvalidParamError('loadUserByEmailRepository'))
+  })
+
+  test('Should return null if LoadUserByEmailRepository returns null', async () => {
+    /*
+      - Teste para retornar o valor null caso não encontre um usuário na base de dados
+    */
+    const { sut } = makeSut()
+    const accessToken = await sut.auth('invalid_email@email.com', 'any_password')
+
+    expect(accessToken).toBeNull()
   })
 })
