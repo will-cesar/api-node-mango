@@ -18,6 +18,21 @@ class AuthUseCase {
   }
 }
 
+const makeSut = () => {
+  /*
+    - Método factory que cria uma classe mock de repositório
+  */
+  class LoadUserByEmailRepositorySpy {
+    async load (email) {
+      this.email = email
+    }
+  }
+
+  const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy()
+  const sut = new AuthUseCase(loadUserByEmailRepositorySpy)
+  return { sut, loadUserByEmailRepositorySpy }
+}
+
 describe('Auth UseCase', () => {
   test('Should throw if no email is provided', () => {
     /*
@@ -26,7 +41,7 @@ describe('Auth UseCase', () => {
       - const promise => está sendo retornada uma promise pois o método auth()
       é assíncrono, e a variável "promise" não está utilizando await para esperar o retorno
     */
-    const sut = new AuthUseCase()
+    const { sut } = makeSut()
     const promise = sut.auth()
 
     expect(promise).rejects.toThrow(new MissingParamError('email'))
@@ -37,7 +52,7 @@ describe('Auth UseCase', () => {
       - Nesse teste é esperado o retorno de um erro do tipo MissingParamError
       quando não passar uma senha na chamada da classe AuthUseCase()
     */
-    const sut = new AuthUseCase()
+    const { sut } = makeSut()
     const promise = sut.auth('any_email@email.com')
 
     expect(promise).rejects.toThrow(new MissingParamError('password'))
@@ -48,14 +63,7 @@ describe('Auth UseCase', () => {
       - Teste para certificar que o email recebido dentro da classe LoadUserByEmailRepository
       seja o mesmo que está sendo passado na classe AuthUseCase
     */
-    class LoadUserByEmailRepositorySpy {
-      async load (email) {
-        this.email = email
-      }
-    }
-
-    const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy()
-    const sut = new AuthUseCase(loadUserByEmailRepositorySpy)
+    const { sut, loadUserByEmailRepositorySpy } = makeSut()
     await sut.auth('any_email@email.com', 'any_password')
 
     expect(loadUserByEmailRepositorySpy.email).toBe('any_email@email.com')
