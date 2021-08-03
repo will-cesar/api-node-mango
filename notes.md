@@ -84,3 +84,5 @@
 ## Observações
 - Status code: 401 = usado quando o sistema não identifica quem é o usuário
                403 = usado quando o sistema sabe quem é o usuário, mas ele não tem permissão para executar tal ação que foi solicitada
+
+- Quando existe uma função assíncrona e ela é chamada sem o await, ela retorna uma promise
