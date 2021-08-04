@@ -21,6 +21,27 @@ const makeEncrypter = () => {
   return encrypterSpy
 }
 
+const makeTokenGenerator = () => {
+  /*
+    - Método factory que cria uma classe mock de geração de token
+    de usuário
+    - O método generate() captura um userId e retorna um token
+    - Por padrão ela retorna um valor de token válido 
+  */
+
+  class TokenGeneratorSpy {
+    async generate (userId) {
+      this.userId = userId
+      return this.accessToken
+    }
+  }
+
+  const tokenGeneratorSpy = new TokenGeneratorSpy()
+  tokenGeneratorSpy.accessToken = 'any_token'
+
+  return tokenGeneratorSpy
+}
+
 const makeLoadUserByEmailRepository = () => {
   /*
     - Método factory que cria uma classe mock de repositório
@@ -40,6 +61,7 @@ const makeLoadUserByEmailRepository = () => {
   */
   const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy()
   loadUserByEmailRepositorySpy.user = {
+    id: 'any_id',
     password: 'hashed_password'
   }
 
@@ -49,10 +71,16 @@ const makeLoadUserByEmailRepository = () => {
 const makeSut = () => {
   const encrypterSpy = makeEncrypter()
   const loadUserByEmailRepositorySpy = makeLoadUserByEmailRepository()
+  const tokenGeneratorSpy = makeTokenGenerator()
 
-  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy)
+  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy, tokenGeneratorSpy)
 
-  return { sut, loadUserByEmailRepositorySpy, encrypterSpy }
+  return { 
+    sut, 
+    loadUserByEmailRepositorySpy, 
+    encrypterSpy, 
+    tokenGeneratorSpy 
+  }
 }
 
 describe('Auth UseCase', () => {
@@ -165,5 +193,18 @@ describe('Auth UseCase', () => {
 
     expect(encrypterSpy.password).toBe('any_password')
     expect(encrypterSpy.hashedPassword).toBe(loadUserByEmailRepositorySpy.user.password)
+  })
+
+  test('Should call TokenGenerator with correct userId', async () => {
+    /*
+      - Teste para verificar se o id do usuário recebido do 
+      loadUserByEmailRepositorySpy seja o mesmo que o tokenGeneratorSpy 
+      recebeu na chamada
+    */
+
+    const { sut, loadUserByEmailRepositorySpy, tokenGeneratorSpy } = makeSut()
+    await sut.auth('valid_email@email.com', 'valid_password')
+
+    expect(tokenGeneratorSpy.userId).toBe(loadUserByEmailRepositorySpy.user.id)
   })
 })
