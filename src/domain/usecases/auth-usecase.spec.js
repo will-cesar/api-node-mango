@@ -1,34 +1,5 @@
 const { MissingParamError, InvalidParamError } = require('../../utils/errors')
-
-class AuthUseCase {
-  constructor (loadUserByEmailRepository) {
-    this.loadUserByEmailRepository = loadUserByEmailRepository
-  }
-
-  async auth (email, password) {
-    if (!email) {
-      throw new MissingParamError('email')
-    }
-
-    if (!password) {
-      throw new MissingParamError('password')
-    }
-
-    if (!this.loadUserByEmailRepository) {
-      throw new MissingParamError('loadUserByEmailRepository')
-    }
-
-    if (!this.loadUserByEmailRepository.load) {
-      throw new InvalidParamError('loadUserByEmailRepository')
-    }
-
-    const user = await this.loadUserByEmailRepository.load(email)
-
-    if (!user) {
-      return null
-    }
-  }
-}
+const AuthUseCase = require('./auth-usecase')
 
 const makeSut = () => {
   /*
@@ -104,6 +75,7 @@ describe('Auth UseCase', () => {
       - Está sendo passado um objeto vazio como parâmetro, assim o mesmo se torna
       undefined dentro da classe
     */
+
     const sut = new AuthUseCase({})
     const promise = sut.auth('any_email@email.com', 'any_password')
 
@@ -112,8 +84,12 @@ describe('Auth UseCase', () => {
 
   test('Should return null if LoadUserByEmailRepository returns null', async () => {
     /*
-      - Teste para retornar o valor null caso não encontre um usuário na base de dados
+      - Teste para garantir que a classe AuthUseCase vai retornar um valor null
+      caso o repositório, LoadUserByEmailRepository, retorne null
+      - Ou seja, caso não encontre o usuário pelo email, será retornado um valor
+      null pela classe
     */
+
     const { sut } = makeSut()
     const accessToken = await sut.auth('invalid_email@email.com', 'any_password')
 
