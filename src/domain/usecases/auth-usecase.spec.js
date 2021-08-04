@@ -73,7 +73,11 @@ const makeSut = () => {
   const loadUserByEmailRepositorySpy = makeLoadUserByEmailRepository()
   const tokenGeneratorSpy = makeTokenGenerator()
 
-  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy, tokenGeneratorSpy)
+  const sut = new AuthUseCase({
+    loadUserByEmailRepository: loadUserByEmailRepositorySpy, 
+    encrypter: encrypterSpy, 
+    tokenGenerator: tokenGeneratorSpy
+  })
 
   return { 
     sut, 
@@ -128,7 +132,7 @@ describe('Auth UseCase', () => {
       passado na hora de criar a instância da classe
     */
 
-    const sut = new AuthUseCase()
+    const sut = new AuthUseCase({})
     const promise = sut.auth('any_email@email.com', 'any_password')
 
     expect(promise).rejects.toThrow()
@@ -142,7 +146,9 @@ describe('Auth UseCase', () => {
       undefined dentro da classe
     */
 
-    const sut = new AuthUseCase({})
+    const sut = new AuthUseCase({
+      loadUserByEmailRepository: {}
+    })
     const promise = sut.auth('any_email@email.com', 'any_password')
 
     expect(promise).rejects.toThrow()
