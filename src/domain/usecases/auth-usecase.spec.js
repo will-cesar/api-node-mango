@@ -126,46 +126,6 @@ describe('Auth UseCase', () => {
     expect(loadUserByEmailRepositorySpy.email).toBe('any_email@email.com')
   })
 
-  test('Should throw if no dependency is provided', async () => {
-    /*
-      - Teste para gerar uma excessão caso nenhuma dependência seja passada
-      ao instanciar a classe
-    */
-
-    const sut = new AuthUseCase()
-    const promise = sut.auth('any_email@email.com', 'any_password')
-
-    expect(promise).rejects.toThrow()
-  })
-
-  test('Should throw if no LoadUserByEmailRepository is provided', async () => {
-    /*
-      - Teste para gerar uma excessão caso o LoadUserByEmailRepository não seja
-      passado na hora de criar a instância da classe
-    */
-
-    const sut = new AuthUseCase({})
-    const promise = sut.auth('any_email@email.com', 'any_password')
-
-    expect(promise).rejects.toThrow()
-  })
-
-  test('Should throw if no LoadUserByEmailRepository has no load method', async () => {
-    /*
-      - Teste para gerar uma excessão caso o LoadUserByEmailRepository não tenha
-      o método load()
-      - Está sendo passado um objeto vazio como parâmetro, assim o mesmo se torna
-      undefined dentro da classe
-    */
-
-    const sut = new AuthUseCase({
-      loadUserByEmailRepository: {}
-    })
-    const promise = sut.auth('any_email@email.com', 'any_password')
-
-    expect(promise).rejects.toThrow()
-  })
-
   test('Should return null if an invalid email is provided', async () => {
     /*
       - Teste para garantir que a classe AuthUseCase vai retornar um valor null
@@ -240,5 +200,47 @@ describe('Auth UseCase', () => {
 
     expect(accessToken).toBe(tokenGeneratorSpy.accessToken)
     expect(accessToken).toBeTruthy()
+  })
+
+  test('Should throw if invalid dependencies are provided', async () => {
+    /*
+      - Teste para testar as injeções de dependência na classe 
+      - Esse teste é necessário para garantir que o erro será emitido
+      pela classe AuthUseCase, para a outra classe que chamou ela, a LoginRouter
+      receba o erro e trate ele
+    */
+
+    const invalid = {}
+    const loadUserByEmailRepository = makeLoadUserByEmailRepository()
+    const encrypter = makeEncrypter()
+
+    const suts = [].concat(
+      new AuthUseCase(),
+      new AuthUseCase({}),
+      new AuthUseCase({ 
+        loadUserByEmailRepository: invalid 
+      }),
+      new AuthUseCase({ 
+        loadUserByEmailRepository
+      }),
+      new AuthUseCase({ 
+        loadUserByEmailRepository,
+        encrypter: invalid 
+      }),
+      new AuthUseCase({ 
+        loadUserByEmailRepository,
+        encrypter
+      }),
+      new AuthUseCase({ 
+        loadUserByEmailRepository,
+        encrypter,
+        tokenGenerator: invalid 
+      })
+    )
+
+    for (const sut of suts) {
+      const promise = sut.auth('any_email@email.com', 'any_password')
+      expect(promise).rejects.toThrow()
+    }
   })
 })
