@@ -126,6 +126,18 @@ describe('Auth UseCase', () => {
     expect(loadUserByEmailRepositorySpy.email).toBe('any_email@email.com')
   })
 
+  test('Should throw if no dependency is provided', async () => {
+    /*
+      - Teste para gerar uma excessão caso nenhuma dependência seja passada
+      ao instanciar a classe
+    */
+
+    const sut = new AuthUseCase()
+    const promise = sut.auth('any_email@email.com', 'any_password')
+
+    expect(promise).rejects.toThrow()
+  })
+
   test('Should throw if no LoadUserByEmailRepository is provided', async () => {
     /*
       - Teste para gerar uma excessão caso o LoadUserByEmailRepository não seja
