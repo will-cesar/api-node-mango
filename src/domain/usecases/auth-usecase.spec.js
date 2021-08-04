@@ -21,6 +21,20 @@ const makeEncrypter = () => {
   return encrypterSpy
 }
 
+const makeEncrypterWithError = () => {
+  /*
+    - Método factory para retornar um erro
+  */
+
+    class EncrypterSpy {
+      async compare () {
+        throw new Error()
+      }
+    }
+  
+    return new EncrypterSpy()
+}
+
 const makeTokenGenerator = () => {
   /*
     - Método factory que cria uma classe mock de geração de token
@@ -40,6 +54,20 @@ const makeTokenGenerator = () => {
   tokenGeneratorSpy.accessToken = 'any_token'
 
   return tokenGeneratorSpy
+}
+
+const makeTokenGeneratorWithError = () => {
+  /*
+    - Método factory para retornar um erro
+  */
+
+  class TokenGeneratorSpy {
+    async generate (userId) {
+      throw new Error()
+    }
+  }
+
+  return new TokenGeneratorSpy()
 }
 
 const makeLoadUserByEmailRepository = () => {
@@ -67,6 +95,21 @@ const makeLoadUserByEmailRepository = () => {
 
   return loadUserByEmailRepositorySpy
 }
+
+const makeLoadUserByEmailRepositoryWithError = () => {
+  /*
+    - Método factory para retornar um erro
+  */
+
+  class LoadUserByEmailRepositorySpy {
+    async load () {
+      throw new Error()
+    }
+  }
+
+  return new LoadUserByEmailRepositorySpy()
+}
+
 
 const makeSut = () => {
   const encrypterSpy = makeEncrypter()
@@ -243,4 +286,34 @@ describe('Auth UseCase', () => {
       expect(promise).rejects.toThrow()
     }
   })
+
+  test('Should throw if dependency throws', async () => {
+    /*
+      - Teste para retornar um erro caso uma dependência retorne um erro 
+      também
+    */
+   
+    const loadUserByEmailRepository = makeLoadUserByEmailRepository()
+    const encrypter = makeEncrypter()
+    const suts = [].concat(
+      new AuthUseCase({ 
+        loadUserByEmailRepository: makeLoadUserByEmailRepositoryWithError() 
+      }),
+      new AuthUseCase({ 
+        loadUserByEmailRepository,
+        encrypter: makeEncrypterWithError()
+      }),
+      new AuthUseCase({ 
+        loadUserByEmailRepository,
+        encrypter,
+        tokenGenerator: makeTokenGeneratorWithError()
+      })
+    )
+
+    for (const sut of suts) {
+      const promise = sut.auth('any_email@email.com', 'any_password')
+      expect(promise).rejects.toThrow()
+    }
+  })
 })
+
