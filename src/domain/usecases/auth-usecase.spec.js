@@ -1,19 +1,30 @@
 const { MissingParamError, InvalidParamError } = require('../../utils/errors')
 const AuthUseCase = require('./auth-usecase')
 
-const makeSut = () => {
+const makeEncrypter = () => {
   /*
-    - Método factory que cria uma classe mock de repositório
+    - Método factory que cria uma classe mock do Encrypter
   */
 
   class EncrypterSpy {
     async compare (password, hashedPassword) {
       this.password = password
       this.hashedPassword = hashedPassword
+
+      return this.isValid
     }
   }
 
   const encrypterSpy = new EncrypterSpy()
+  encrypterSpy.isValid = true
+
+  return encrypterSpy
+}
+
+const makeLoadUserByEmailRepository = () => {
+  /*
+    - Método factory que cria uma classe mock de repositório
+  */
 
   class LoadUserByEmailRepositorySpy {
     async load (email) {
@@ -31,6 +42,14 @@ const makeSut = () => {
   loadUserByEmailRepositorySpy.user = {
     password: 'hashed_password'
   }
+
+  return loadUserByEmailRepositorySpy
+}
+
+const makeSut = () => {
+  const encrypterSpy = makeEncrypter()
+  const loadUserByEmailRepositorySpy = makeLoadUserByEmailRepository()
+
   const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy)
 
   return { sut, loadUserByEmailRepositorySpy, encrypterSpy }
@@ -122,9 +141,12 @@ describe('Auth UseCase', () => {
       caso o repositório, LoadUserByEmailRepository, retorne null
       - Ou seja, caso o password seja inválido, será retornado um valor
       null pela classe
+      - Como por padrão do mock a password está sempre válida, está sendo mockado 
+      o valor de isValid como false para testar um valor inválido
     */
 
-    const { sut } = makeSut()
+    const { sut, encrypterSpy } = makeSut()
+    encrypterSpy.isValid = false
     const accessToken = await sut.auth('valid_email@email.com', 'invalid_password')
 
     expect(accessToken).toBeNull()
