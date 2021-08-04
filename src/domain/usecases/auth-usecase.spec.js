@@ -6,6 +6,15 @@ const makeSut = () => {
     - Método factory que cria uma classe mock de repositório
   */
 
+  class EncrypterSpy {
+    async compare (password, hashedPassword) {
+      this.password = password
+      this.hashedPassword = hashedPassword
+    }
+  }
+
+  const encrypterSpy = new EncrypterSpy()
+
   class LoadUserByEmailRepositorySpy {
     async load (email) {
       this.email = email
@@ -14,10 +23,17 @@ const makeSut = () => {
     }
   }
 
+  /*
+    - loadUserByEmailRepositorySpy simula a consulta no banco de dados
+    retornando os dados de um usuário
+  */
   const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy()
-  loadUserByEmailRepositorySpy.user = {}
-  const sut = new AuthUseCase(loadUserByEmailRepositorySpy)
-  return { sut, loadUserByEmailRepositorySpy }
+  loadUserByEmailRepositorySpy.user = {
+    password: 'hashed_password'
+  }
+  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy)
+
+  return { sut, loadUserByEmailRepositorySpy, encrypterSpy }
 }
 
 describe('Auth UseCase', () => {
@@ -112,5 +128,20 @@ describe('Auth UseCase', () => {
     const accessToken = await sut.auth('valid_email@email.com', 'invalid_password')
 
     expect(accessToken).toBeNull()
+  })
+
+  test('Should call Encrypter with correct values', async () => {
+    /*
+      - Teste para garantir a integração do AuthUseCase com a biblioteca
+      de criptografia de senhas
+      - O Encrypter precisa receber o password da chamada do método, e o 
+      password criptografado recebido do user de dentro do método auth
+    */
+
+    const { sut, loadUserByEmailRepositorySpy, encrypterSpy } = makeSut()
+    await sut.auth('valid_email@email.com', 'any_password')
+
+    expect(encrypterSpy.password).toBe('any_password')
+    expect(encrypterSpy.hashedPassword).toBe(loadUserByEmailRepositorySpy.user.password)
   })
 })
