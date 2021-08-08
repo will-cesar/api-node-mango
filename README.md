@@ -9,6 +9,7 @@
 
 ## Tech Stack
 
+- [**Bcryptjs**](https://www.npmjs.com/package/bcryptjs)
 - [**Husky**](https://www.npmjs.com/package/husky)
 - [**Jest**](https://jestjs.io/pt-BR/)
 - [**Lint-staged**](https://github.com/okonet/lint-staged)
