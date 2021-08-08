@@ -10,6 +10,11 @@ class TokenGenerator {
     if (!this.secret) {
       throw new MissingParamError('secret')
     }
+
+    if (!id) {
+      throw new MissingParamError('id')
+    }
+
     return jwt.sign(id, this.secret)
   }
 }
@@ -36,8 +41,8 @@ describe('Token Generator', () => {
   test('Should return a token if JWT retuns token', async () => {
     /*
     - Teste para garantir que a classe retorne um token caso
-    a biblioteca retorne um token também
-  */
+      a biblioteca retorne um token também
+    */
 
     const sut = makeSut()
     const token = await sut.generate('any_id')
@@ -47,8 +52,8 @@ describe('Token Generator', () => {
   test('Should call JWT with correct values', async () => {
     /*
     - Teste para garantir que a biblioteca JWT receba os valores
-    corretos
-  */
+      corretos
+    */
 
     const sut = makeSut()
     await sut.generate('any_id')
@@ -59,11 +64,22 @@ describe('Token Generator', () => {
   test('Should throw if no secret is provided', async () => {
     /*
     - Teste para garantir que a classe retorne um exceção caso
-    o secret não seja passado no parâmetro da classe
-  */
+      o secret não seja passado no parâmetro da classe
+    */
 
     const sut = new TokenGenerator()
     const promise = sut.generate('any_id')
     expect(promise).rejects.toThrow(new MissingParamError('secret'))
+  })
+
+  test('Should throw if no id is provided', async () => {
+    /*
+    - Teste para garantir que a classe retorne um exceção caso
+      o id não seja passado no parâmetro da classe
+    */
+
+    const sut = makeSut()
+    const promise = sut.generate()
+    expect(promise).rejects.toThrow(new MissingParamError('id'))
   })
 })
