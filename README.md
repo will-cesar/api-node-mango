@@ -12,6 +12,7 @@
 - [**Bcryptjs**](https://www.npmjs.com/package/bcryptjs)
 - [**Husky**](https://www.npmjs.com/package/husky)
 - [**Jest**](https://jestjs.io/pt-BR/)
+- [**Jsonwebtoken**](https://www.npmjs.com/package/jsonwebtoken)
 - [**Lint-staged**](https://github.com/okonet/lint-staged)
 - [**Node.js**](https://nodejs.org/en/)
 - [**StandardJS**](https://standardjs.com)
