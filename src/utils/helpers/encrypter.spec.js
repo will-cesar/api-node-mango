@@ -49,6 +49,8 @@ describe('Encrypter', () => {
       - Teste para retornar um erro caso nenhum parâmetro seja passado,
       ou se apenas um ou outro parâmetro seja passado
       - É obrigatório o envio dos dois parâmetros para a função Encrypter
+      - Quando estamos testando uma exceção de um método assíncrono
+      é necessário utilizar o "rejects"
     */
 
     const sut = makeSut()

@@ -1,5 +1,6 @@
-const EmailValidator = require('./email-validator')
 const validator = require('validator')
+const MissingParamError = require('../errors/missing-param-error')
+const EmailValidator = require('./email-validator')
 
 const makeSut = () => {
   /*
@@ -47,5 +48,21 @@ describe('Email Validator', () => {
     const sut = makeSut()
     sut.isValid('any_email@email.com')
     expect(validator.email).toBe('any_email@email.com')
+  })
+
+  test('Should throw if no email is provided', async () => {
+    /*
+      - Teste para retornar um erro caso nenhum email seja passado
+      como parâmetro na função
+      - Quando estamos testando uma exceção de um método não assíncrono
+      precisamos passar o ponteiro da função, e não a função em si,
+      por exemplo: sut.isValid
+      - Mas, também é possível passar uma arrow function e chamar
+      da forma convencional o método, assim podem passar N parâmetros
+      caso seja necessário
+    */
+
+    const sut = makeSut()
+    expect(() => { sut.isValid() }).toThrow(new MissingParamError('email'))
   })
 })
