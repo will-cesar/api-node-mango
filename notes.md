@@ -81,8 +81,31 @@
 - jest-integration-config.js
     - mesma coisa que oa arquivo "jest-unit-config.js", mas adicionando regras para testes de integração
 
+## DDD - Domain Driven Design
+
+- domain
+    - onde é definido as entidades
+    - podem ficar os casos de uso
+    - no domínio é comum utilizar apenas dados e interface
+    - a camada de domain nunca pode ter imports de outras camadas
+
+- data
+    - camada de implementação
+    - utilização dos services
+    - essa camada apenas se comunica com a camada de domain
+
+- infra
+    - onde ficam os repositories
+    - se comunica diretamente apenas com a camada de data
+    - nunca pode se comunicar com a camada de domain
+
+- presentation
+    - onde ficam os controllers
+    - trata os dados vindo dos serviços
+
 ## Observações
 - Status code: 401 = usado quando o sistema não identifica quem é o usuário
                403 = usado quando o sistema sabe quem é o usuário, mas ele não tem permissão para executar tal ação que foi solicitada
 
 - Quando existe uma função assíncrona e ela é chamada sem o await, ela retorna uma promise
+
