@@ -7,6 +7,10 @@ class Encrypter {
   }
 }
 
+const makeSut = () => {
+  return new Encrypter()
+}
+
 describe('Encrypter', () => {
   test('Should return true if bcryptjs returns true', async () => {
     /*
@@ -14,7 +18,7 @@ describe('Encrypter', () => {
       - Caso seja true, é necessário que o método retorne true também
     */
 
-    const sut = new Encrypter()
+    const sut = makeSut()
     const isValid = await sut.compare('any_value', 'hashed_value')
     expect(isValid).toBe(true)
   })
@@ -27,7 +31,7 @@ describe('Encrypter', () => {
       - Para o teste ser bem sucedido é necessário passar o valor false dentro do teste
     */
 
-    const sut = new Encrypter()
+    const sut = makeSut()
     bcryptjs.isValid = false
     const isValid = await sut.compare('any_value', 'hashed_value')
     expect(isValid).toBe(false)
@@ -39,7 +43,7 @@ describe('Encrypter', () => {
       são os valores corretos
     */
 
-    const sut = new Encrypter()
+    const sut = makeSut()
     await sut.compare('any_value', 'hashed_value')
     expect(bcryptjs.value).toBe('any_value')
     expect(bcryptjs.hash).toBe('hashed_value')
