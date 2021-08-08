@@ -1,5 +1,6 @@
 const bcryptjs = require('bcryptjs')
 const Encrypter = require('./encrypter')
+const MissingParamError = require('../errors/missing-param-error')
 
 const makeSut = () => {
   return new Encrypter()
@@ -41,5 +42,17 @@ describe('Encrypter', () => {
     await sut.compare('any_value', 'hashed_value')
     expect(bcryptjs.value).toBe('any_value')
     expect(bcryptjs.hash).toBe('hashed_value')
+  })
+
+  test('Should throw if no params are provided', async () => {
+    /*
+      - Teste para retornar um erro caso nenhum parâmetro seja passado,
+      ou se apenas um ou outro parâmetro seja passado
+      - É obrigatório o envio dos dois parâmetros para a função Encrypter
+    */
+
+    const sut = makeSut()
+    expect(sut.compare()).rejects.toThrow(new MissingParamError('value'))
+    expect(sut.compare('any_value')).rejects.toThrow(new MissingParamError('hash'))
   })
 })
