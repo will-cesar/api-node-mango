@@ -38,7 +38,15 @@
     - npm install -g jest
 
 - npm i validator
-    - bilbioteca para validações de string (principalmente email)
+    - biblioteca para validações de string (principalmente email)
+
+- npm i mongodb
+    - biblioteca de drivers do mongoDB para o NodeJS
+
+- npm i @shelf/jest-mongodb -D
+    - biblioteca que cria um banco mongoDb em memória para desenvolvimento
+    - necessário seguir o passo a passo para a correta instalação
+    - https://www.npmjs.com/package/@shelf/jest-mongodb
 
 ## Testes
 - como boa prática, se inicia primeiro criando o arquivo de teste
