@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "pre-commit": "lint-staged --allow-empty",
-    "test": "jest --silent --colors --noStackTrace --passWithNoTests",
-    "test:integration": "npm test -- --watch -c jest-integration-config.js",
+    "test": "jest --colors --noStackTrace --passWithNoTests",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
-    "test:staged": "npm test -- --findRelatedTests ./src",
-    "test:ci": "npm test -- --coverage"
+    "test:integration": "npm test -- --watch -c jest-integration-config.js",
+    "test:staged": "npm test -- --findRelatedTests ./src --silent",
+    "test:ci": "npm test -- --coverage --silent"
   },
   "standard": {
     "env": [
