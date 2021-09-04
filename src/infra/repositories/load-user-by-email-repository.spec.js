@@ -14,15 +14,29 @@ const makeSut = () => {
 
 describe('LoadUserByEmail Repository', () => {
   beforeAll(async () => {
+    /*
+      Antes de iniciar os métodos de testes, é necessário
+      se conectar ao banco de dados
+    */
+
     await MongoHelper.connect(process.env.MONGO_URL)
     db = await MongoHelper.getDb()
   })
 
   beforeEach(async () => {
+    /*
+      Antes de iniciar cada teste, é necessário
+      limpar as tabelas de 'users'
+    */
+
     await db.collection('users').deleteMany()
   })
 
   afterAll(async () => {
+    /*
+      Após os testes ocorre o disconnect com o mongoDb
+    */
+
     await MongoHelper.disconnect()
   })
 
