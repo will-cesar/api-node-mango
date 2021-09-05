@@ -48,6 +48,8 @@
     - necessário seguir o passo a passo para a correta instalação
     - https://www.npmjs.com/package/@shelf/jest-mongodb
 
+- npm i express
+
 ## Testes
 - como boa prática, se inicia primeiro criando o arquivo de teste
 - dentro dele, criar o primeiro teste, para assim logo em seguida criar os métodos e etc
