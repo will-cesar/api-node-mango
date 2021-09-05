@@ -83,6 +83,8 @@
         - não retorna o log completo do erro do teste
         - quando acontece um erro, ele retorna  de forma resumida qual teste está errado e qual
         o erro em específico
+    - "--runInBand"
+        - roda os testes em paralelo, sequencialmente
 - .spec.js e .test.js
     - nesse projeto foi diferenciado os arquivos de testes unitários e testes integrados pelas suas extensões de cada arquivo
     - .spec.js - arquivos com testes unitários
