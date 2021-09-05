@@ -53,6 +53,8 @@
 - npm i supertest -D
     - biblioteca que permite simular uma requisição
 
+- npm i fast-glob
+
 ## Testes
 - como boa prática, se inicia primeiro criando o arquivo de teste
 - dentro dele, criar o primeiro teste, para assim logo em seguida criar os métodos e etc
