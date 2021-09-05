@@ -34,8 +34,6 @@ describe("UpdateAccessTokenRepository", () => {
     await MongoHelper.disconnect();
   });
 
-  test("", () => {});
-
   // test("Should update the user with the given accessToken", async () => {
   //   const { sut, userModel } = makeSut();
   //   await sut.update(fakeUserId, "valid_token");
@@ -43,11 +41,11 @@ describe("UpdateAccessTokenRepository", () => {
   //   expect(updatedFakeUser.accessToken).toBe("invalid_token");
   // });
 
-  // test("Should throw if no userModel is provided", async () => {
-  //   const sut = new UpdateAccessTokenRepository();
-  //   const promise = sut.update(fakeUserId, "valid_token");
-  //   expect(promise).rejects.toThrow();
-  // });
+  test("Should throw if no userModel is provided", async () => {
+    const sut = new UpdateAccessTokenRepository();
+    const promise = sut.update(fakeUserId, "valid_token");
+    expect(promise).rejects.toThrow();
+  });
 
   // test("Should throw if no params is provided", async () => {
   //   const { sut } = makeSut();
