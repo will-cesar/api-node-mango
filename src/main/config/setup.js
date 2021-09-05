@@ -1,5 +1,6 @@
 const cors = require('../middlewares/cors')
 const jsonParser = require('../middlewares/json-parser')
+const contentType = require('../middlewares/content-type')
 
 module.exports = (app) => {
   // remove uma propriedade padrão do header do express
@@ -10,4 +11,6 @@ module.exports = (app) => {
 
   // "ativa" o body parser nas requisições
   app.use(jsonParser)
+
+  app.use(contentType)
 }
