@@ -1,28 +1,28 @@
-const MissingParamError = require('../../utils/errors/missing-param-error')
+const MissingParamError = require("../../utils/errors/missing-param-error");
 
 module.exports = class UpdateAccessTokenRepository {
-  constructor (userModel) {
-    this.userModel = userModel
+  constructor(userModel) {
+    this.userModel = userModel;
   }
 
-  async update (userId, accessToken) {
+  async update(userId, accessToken) {
     if (!userId) {
-      throw new MissingParamError('userId')
+      throw new MissingParamError("userId");
     }
 
     if (!accessToken) {
-      throw new MissingParamError('userId')
+      throw new MissingParamError("userId");
     }
 
     await this.userModel.updateOne(
       {
-        _id: userId
+        _id: userId,
       },
       {
         $set: {
-          accessToken
-        }
+          accessToken,
+        },
       }
-    )
+    );
   }
-}
+};
