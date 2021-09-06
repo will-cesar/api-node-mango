@@ -1,34 +1,34 @@
-jest.mock("bcrypt", () => ({
+jest.mock('bcryptjs', () => ({
   isValid: true,
 
-  async compare(value, hash) {
-    this.value = value;
-    this.hash = hash;
-    return this.isValid;
-  },
-}));
+  async compare (value, hash) {
+    this.value = value
+    this.hash = hash
+    return this.isValid
+  }
+}))
 
-const bcrypt = require("bcrypt");
-const Encrypter = require("./encrypter");
-const MissingParamError = require("../errors/missing-param-error");
+const bcrypt = require('bcryptjs')
+const Encrypter = require('./encrypter')
+const MissingParamError = require('../errors/missing-param-error')
 
 const makeSut = () => {
-  return new Encrypter();
-};
+  return new Encrypter()
+}
 
-describe("Encrypter", () => {
-  test("Should return true if bcryptjs returns true", async () => {
+describe('Encrypter', () => {
+  test('Should return true if bcryptjs returns true', async () => {
     /*
       - Teste responsável por validar se o retorno da biblioteca bcrypt é true
       - Caso seja true, é necessário que o método retorne true também
     */
 
-    const sut = makeSut();
-    const isValid = await sut.compare("any_value", "hashed_value");
-    expect(isValid).toBe(true);
-  });
+    const sut = makeSut()
+    const isValid = await sut.compare('any_value', 'hashed_value')
+    expect(isValid).toBe(true)
+  })
 
-  test("Should return false if bcryptjs returns false", async () => {
+  test('Should return false if bcryptjs returns false', async () => {
     /*
       - Teste responsável por validar se o retorno da biblioteca bcrypt é false
       - Caso seja false, é necessário que o método retorne false também
@@ -36,25 +36,25 @@ describe("Encrypter", () => {
       - Para o teste ser bem sucedido é necessário passar o valor false dentro do teste
     */
 
-    const sut = makeSut();
-    bcrypt.isValid = false;
-    const isValid = await sut.compare("any_value", "hashed_value");
-    expect(isValid).toBe(false);
-  });
+    const sut = makeSut()
+    bcrypt.isValid = false
+    const isValid = await sut.compare('any_value', 'hashed_value')
+    expect(isValid).toBe(false)
+  })
 
-  test("Should call bcryptjs with correct values", async () => {
+  test('Should call bcryptjs with correct values', async () => {
     /*
       - Teste para validar se o "value" e o "hash" passados para o bcryptjs
       são os valores corretos
     */
 
-    const sut = makeSut();
-    await sut.compare("any_value", "hashed_value");
-    expect(bcrypt.value).toBe("any_value");
-    expect(bcrypt.hash).toBe("hashed_value");
-  });
+    const sut = makeSut()
+    await sut.compare('any_value', 'hashed_value')
+    expect(bcrypt.value).toBe('any_value')
+    expect(bcrypt.hash).toBe('hashed_value')
+  })
 
-  test("Should throw if no params are provided", async () => {
+  test('Should throw if no params are provided', async () => {
     /*
       - Teste para retornar um erro caso nenhum parâmetro seja passado,
       ou se apenas um ou outro parâmetro seja passado
@@ -63,10 +63,10 @@ describe("Encrypter", () => {
       é necessário utilizar o "rejects"
     */
 
-    const sut = makeSut();
-    expect(sut.compare()).rejects.toThrow(new MissingParamError("value"));
-    expect(sut.compare("any_value")).rejects.toThrow(
-      new MissingParamError("hash")
-    );
-  });
-});
+    const sut = makeSut()
+    expect(sut.compare()).rejects.toThrow(new MissingParamError('value'))
+    expect(sut.compare('any_value')).rejects.toThrow(
+      new MissingParamError('hash')
+    )
+  })
+})
