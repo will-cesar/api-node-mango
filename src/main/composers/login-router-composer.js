@@ -7,10 +7,10 @@ const Encrypter = require('../../utils/helpers/encrypter')
 const TokenGenerator = require('../../utils/helpers/token-generator')
 const env = require('../config/env')
 
-const tokenGenerator = TokenGenerator(env.tokenSecret)
-const encrypter = Encrypter()
+const tokenGenerator = new TokenGenerator(env.tokenSecret)
+const encrypter = new Encrypter()
 const loadUserByEmailRepository = new LoadUserByEmailRepository()
-const updateAccessTokenRepository = UpdateAccessTokenRepository()
+const updateAccessTokenRepository = new UpdateAccessTokenRepository()
 const emailValidator = new EmailValidator()
 const authUseCase = new AuthUseCase({
   loadUserByEmailRepository,
