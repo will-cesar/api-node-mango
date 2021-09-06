@@ -1,35 +1,45 @@
-const request = require("supertest");
-const app = require("../config/app");
-const bcrypt = require("bcryptjs");
-const MongoHelper = require("../../infra/helpers/mongo-helper");
-let userModel;
+const request = require('supertest')
+const app = require('../config/app')
+const bcrypt = require('bcryptjs')
+const MongoHelper = require('../../infra/helpers/mongo-helper')
+let userModel
 
-describe("Login Routes", () => {
+describe('Login Routes', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL);
-    userModel = await MongoHelper.getCollection("users");
-  });
+    await MongoHelper.connect(process.env.MONGO_URL)
+    userModel = await MongoHelper.getCollection('users')
+  })
 
   beforeEach(async () => {
-    await userModel.deleteMany();
-  });
+    await userModel.deleteMany()
+  })
 
   afterAll(async () => {
-    await MongoHelper.disconnect();
-  });
+    await MongoHelper.disconnect()
+  })
 
-  test("Should return 200 when valid credentials are provided", async () => {
+  test('Should return 200 when valid credentials are provided', async () => {
     await userModel.insertOne({
-      email: "valid_email@email.com",
-      password: bcrypt.hashSync("hashed_password", 10),
-    });
+      email: 'valid_email@email.com',
+      password: bcrypt.hashSync('hashed_password', 10)
+    })
 
     await request(app)
-      .post("/api/login")
+      .post('/api/login')
       .send({
-        email: "valid_email@email.com",
-        password: "hashed_password",
+        email: 'valid_email@email.com',
+        password: 'hashed_password'
       })
-      .expect(200);
-  });
-});
+      .expect(200)
+  })
+
+  test('Should return 401 when invalid credentials are provided', async () => {
+    await request(app)
+      .post('/api/login')
+      .send({
+        email: 'valid_email@email.com',
+        password: 'hashed_password'
+      })
+      .expect(401)
+  })
+})
